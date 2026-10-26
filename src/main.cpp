@@ -28,17 +28,21 @@ class Bouncer {
     public:
         bn::sprite_ptr sprite;
         bn::fixed x_speed;
+        bn::fixed y_speed;
 
         Bouncer(bn::fixed x_start, bn::fixed y_start) : 
             sprite(bn::sprite_items::dot.create_sprite(x_start, y_start)), 
-            x_speed(BASE_SPEED) {
+            x_speed(BASE_SPEED),
+            y_speed(BASE_SPEED) {
         }
 
         void update() {
             bn::fixed x = sprite.x();
+            bn::fixed y = sprite.y();
 
             // Update x position by adding speed
             x += x_speed;
+            y += y_speed;
 
             // If we've gone off the screen on the right
             if(x > MAX_X) {
@@ -52,8 +56,19 @@ class Bouncer {
                 x = MIN_X;
                 x_speed *= -1;
             }
+            // If we've gone off the bottom of the screen
+            if(y > MAX_Y) {
+                y = MAX_Y;
+                y_speed *= -1;
+            }
+            // If we've gone off the top of the screen
+            if(y < MIN_Y) {
+                y = MIN_Y;
+                y_speed *= -1;
+            }
 
             sprite.set_x(x);
+            sprite.set_y(y);
         }
     private:
 };
