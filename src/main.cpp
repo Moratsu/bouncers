@@ -18,6 +18,8 @@ static constexpr int HALF_SCREEN_HEIGHT = bn::display::height() / 2;
 static constexpr bn::fixed MIN_Y = -HALF_SCREEN_HEIGHT;
 static constexpr bn::fixed MAX_Y = HALF_SCREEN_HEIGHT;
 
+static constexpr int timer = 180; //3 seconds that the sprites will last for (+60 = 1 second)
+
 // Starting speed of a bouncer
 static constexpr bn::fixed BASE_SPEED = 2;
 
@@ -30,12 +32,18 @@ class Bouncer {
         bn::fixed x_speed;
         bn::fixed y_speed;
 
+        int fps;
+
         Bouncer(bn::fixed x_start, bn::fixed y_start, bn::random& random) : sprite(bn::sprite_items::skull.create_sprite(x_start, y_start)), 
             x_speed(random.get_fixed(-3, 3)),
-            y_speed(random.get_fixed(-3, 3)) {
+            y_speed(random.get_fixed(-3, 3)),
+            fps(timer) {
 }
 
         void update() {
+            
+            fps -= 1;
+
             bn::fixed x = sprite.x();
             bn::fixed y = sprite.y();
 
@@ -125,6 +133,15 @@ int main() {
         for(Bouncer& b : bouncers) {
             b.update();
         }
+
+        //This code is for the extension to get rid of sprites after a certain amount of time.
+        //The bouncers.size is to scale up to all currently existing sprites, and the rest is pretty
+        //straight forward as well. Same timer concept that I used for the collectathon.
+        for(int i = bouncers.size() - 1; i >= 0; i--) {
+            if(bouncers[i].fps <= 0) {
+                bouncers.erase(bouncers.begin() + i);
+            }
+}
 
         y_spawn += 1;
         if(y_spawn > MAX_Y) {
