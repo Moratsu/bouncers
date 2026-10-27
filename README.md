@@ -1,4 +1,8 @@
 # Bouncers
-An exercise to learn about functions and classes.
+Scary but not so scary ghost game© ~
 
-Please find instructions in [instructions.md](instructions.md).
+Spawn in evil floating skulls that terrorize your entire screen, but will soon leave in a matter of seconds, awaiting the next halloween whisper.
+
+You can spawn in these ghosts by pressing "x" on KBM, or you can press "a" on your personal gba.
+
+![alt text](./gif/skull.gif)
